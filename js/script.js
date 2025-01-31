@@ -1,4 +1,4 @@
-require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Legend"], function (Map, MapView, FeatureLayer, Legend) {
+require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Legend", "esri/widgets/Search"], function (Map, MapView, FeatureLayer, Legend, Search) {
 
     // Create a map with Dark Gray Canvas as basemap
     const map = new Map({
@@ -17,8 +17,102 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
         constraints: {
             minZoom: 3, // Minimum zoom level
             maxZoom: 9 // Maximum zoom level
+        },
+        ui: {
+            components: [] // Remove default zoom buttons
         }
     });
+
+    // Create zoom in and zoom out buttons
+    const zoomInButton = document.createElement("button");
+    zoomInButton.innerHTML = "+";
+    zoomInButton.className = "zoom-button";
+    zoomInButton.style.top = "10px"; // Move up
+    zoomInButton.style.left = "10px";
+
+    const zoomOutButton = document.createElement("button");
+    zoomOutButton.innerHTML = "-";
+    zoomOutButton.className = "zoom-button";
+    zoomOutButton.style.top = "45px"; // Move up
+    zoomOutButton.style.left = "10px";
+
+    // Add event listeners for zoom buttons
+    zoomInButton.addEventListener("click", function () {
+        view.zoom += 1;
+    });
+
+    zoomOutButton.addEventListener("click", function () {
+        view.zoom -= 1;
+    });
+
+    // Add zoom buttons to the view
+    view.ui.add(zoomInButton, "manual");
+    view.ui.add(zoomOutButton, "manual");
+
+    // Add the search widget to the right of the zoom buttons
+    const searchWidget = new Search({
+        view: view
+    });
+    view.ui.add(searchWidget, {
+        position: "manual",
+        index: 0
+    });
+    searchWidget.container.style.position = "absolute";
+    searchWidget.container.style.top = "10px";
+    searchWidget.container.style.left = "55px"; // Adjust to be to the right of the zoom buttons
+
+    // Create home button
+    const homeButton = document.createElement("button");
+    homeButton.className = "zoom-button";
+    homeButton.style.top = "45px"; // Position below the info button
+    homeButton.style.right = "10px";
+    const homeIcon = document.createElement("i");
+    homeIcon.className = "fas fa-home";
+    homeIcon.id = "homeIcon";
+    homeButton.appendChild(homeIcon);
+
+    // Add event listener for home button
+    homeButton.addEventListener("click", function () {
+        view.goTo({
+            center: [-97, 38], // Default center
+            zoom: 4 // Default zoom level
+        });
+    });
+
+    // Add home button to the view
+    view.ui.add(homeButton, "manual");
+
+    // Create info button
+    const infoButton = document.createElement("button");
+    infoButton.className = "zoom-button";
+    infoButton.style.top = "10px"; // Position at the top right
+    infoButton.style.right = "10px";
+    const infoIcon = document.createElement("i");
+    infoIcon.className = "fas fa-info-circle";
+    infoIcon.id = "infoIcon";
+    infoButton.appendChild(infoIcon);
+
+    // Add event listener for info button
+    infoButton.addEventListener("click", function () {
+        const infoDialog = document.createElement("div");
+        infoDialog.id = "infoDialog";
+
+        const infoContent = document.createElement("div");
+        infoContent.innerHTML = "Welcome to the web map of <b>The United States of Rising Hazards</b>! The map is designed by Atlas Guo (2025), CartoGuophy.com";
+        infoDialog.appendChild(infoContent);
+
+        const closeButton = document.createElement("button");
+        closeButton.innerHTML = "Close";
+        closeButton.addEventListener("click", function () {
+            document.body.removeChild(infoDialog);
+        });
+        infoDialog.appendChild(closeButton);
+
+        document.body.appendChild(infoDialog);
+    });
+
+    // Add info button to the view
+    view.ui.add(infoButton, "manual");
 
     // Define the Feature Layer URL
     const featureLayerUrl = "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/usbr_point/FeatureServer";
@@ -290,10 +384,24 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     // Create a collapsible legend section
     const legendContainer = document.createElement("div");
     legendContainer.id = "legendContainer";
+    legendContainer.style.maxHeight = "150px"; // Increased initial height
+    legendContainer.style.width = "200px"; // Set initial width
 
     const legendHeader = document.createElement("div");
     legendHeader.id = "legendHeader";
-    legendHeader.innerHTML = "Legend";
+
+    // Add icon to the legend header
+    const legendIcon = document.createElement("img");
+    legendIcon.src = "img/icon.png";
+    legendIcon.style.cssText = `
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
+    `;
+    legendHeader.appendChild(legendIcon);
+
+    legendHeader.innerHTML += "Legend";
     legendContainer.appendChild(legendHeader);
 
     const legendContent = document.createElement("div");
@@ -307,9 +415,11 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
         if (legendContent.style.display === "none") {
             legendContent.style.display = "block";
             legendContainer.style.maxHeight = "300px"; // Expanded height
+            legendContainer.style.width = "500px"; // Expanded width
         } else {
             legendContent.style.display = "none";
             legendContainer.style.maxHeight = "50px"; // Collapsed height
+            legendContainer.style.width = "200px"; // Collapsed width
         }
     });
 

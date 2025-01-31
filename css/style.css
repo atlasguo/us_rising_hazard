@@ -33,3 +33,64 @@ body,
 #legendContent img {
   width: 100%;
 }
+
+/* Make zoom buttons semi-transparent */
+button {
+  opacity: 0.7;
+}
+
+/* Make search widget semi-transparent */
+.esri-search {
+  opacity: 0.85;
+}
+
+/* Style for the search widget to match the legend font */
+.esri-search__input {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+/* Common style for zoom buttons */
+.zoom-button {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  background-color: #eee;
+  color: #222;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+
+
+/* Style for smaller icons in buttons */
+#homeIcon, #infoIcon {
+  font-size: 15px;
+}
+
+/* Style for the info dialog */
+#infoDialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+/* Style for the close button */
+#infoDialog button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
