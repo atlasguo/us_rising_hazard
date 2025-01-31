@@ -1,0 +1,35 @@
+html,
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#legendContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  max-height: 25px; /* Collapsed height */
+}
+
+#legendHeader {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#legendContent {
+  padding: 5px;
+  display: none; /* Initially hidden */
+}
+
+#legendContent img {
+  width: 100%;
+}
