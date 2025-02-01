@@ -12,7 +12,7 @@ body,
   bottom: 10px;
   right: 10px;
   width: 400px;
-  background-color: rgba(100, 100, 100, 0.8);
+  background-color: rgba(80, 80, 80, 0.8);
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   overflow: hidden;
@@ -23,7 +23,7 @@ body,
 #legendHeader {
   padding: 10px;
   cursor: pointer;
-  font-size:15px;
+  font-size: 15px;
   font-weight: bold; 
   color: white;
   display: flex;
@@ -63,7 +63,7 @@ body,
 
 #legendContent {  
   padding: 5px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.4);
   display: none; /* Initially hidden */
 }
 
@@ -88,8 +88,8 @@ button {
   font-size: 14px;
 }
 
-/* Common style for zoom buttons */
-.zoom-button {
+/* Common style for map buttons */
+.mapButton {
   position: absolute;
   width: 33px;
   height: 33px;
@@ -100,11 +100,10 @@ button {
   font-size: 20px;
   cursor: pointer;
   opacity: 0.7;
-}
-
-/* Style for smaller icons in buttons */
-#homeIcon, #infoIcon {
   font-size: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Style for the info dialog */
@@ -113,22 +112,35 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  background-color: rgba(50, 50, 50, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  width: 300px;
-  text-align: center;
+  padding-bottom: 30px;
+  width: 50%;  
+  color: white;
+  text-align:center;
 }
 
 /* Style for the close button */
-#infoDialog button {
+#dialogButton {
   margin-top: 10px;
   padding: 5px 10px;
   background-color: #eee;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Style for hyperlinks */
+#infoDialog a {
+  color: rgb(94, 220, 255);
 }
 
 /* Position styles for buttons */

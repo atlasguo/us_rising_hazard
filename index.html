@@ -15,6 +15,23 @@
 
 <body>
     <div id="viewDiv"></div>
+    <div id="infoDialog" style="display: none;">
+        <button id="dialogButton" class="mapButton" onclick="document.getElementById('infoDialog').style.display='none'"
+            style="position: absolute; top: 10px; right: 20px;">
+            <i class="fas fa-times"></i>
+        </button>
+        <div>
+            <p>Welcome to the web map of <b>The United States of Rising Hazards</b>!</p>
+            <p>This is an interactive edition of my previous static map <a
+                    href="https://cartoguophy.com/maps/us_blooming_risk.html" target="_blank">The United States of the
+                    Blooming Risks</a>. Using FEMA’s <a href="https://hazards.fema.gov/nri/" target="_blank">National
+                    Risk Index</a> dataset, this map aggregates the county-level scores of 18 natural hazards, to
+                1K-SQ-MI hexagon units and builds an innovative multivariate visualization with spatial query
+                functionality.</p>
+            <p>The map is designed by Atlas Guo (2025), <a href="https://cartoguophy.com/"
+                    target="_blank">CartoGuophy.com</a></p>
+        </div>
+    </div>
 </body>
 
 </html>
