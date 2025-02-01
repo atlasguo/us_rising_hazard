@@ -12,9 +12,9 @@ body,
   bottom: 10px;
   right: 10px;
   width: 400px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(100, 100, 100, 0.8);
   border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   transition: max-height 0.3s ease-out;
   max-height: 25px; /* Collapsed height */
@@ -23,15 +23,53 @@ body,
 #legendHeader {
   padding: 10px;
   cursor: pointer;
+  font-size:15px;
+  font-weight: bold; 
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#legendHeader img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 #legendContent {
+  max-height: 400px; /* Expanded height */
+  overflow: auto;
+}
+
+#legendContent img {
+  width: 100%;
+  display: block;
+}
+
+#infoDialog {
+  display: none;
+}
+
+#toggleButton {
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+#legendContent {  
   padding: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
   display: none; /* Initially hidden */
 }
 
 #legendContent img {
   width: 100%;
+  border-radius: 5px;  
 }
 
 /* Make zoom buttons semi-transparent */
@@ -64,11 +102,9 @@ button {
   opacity: 0.7;
 }
 
-
-
 /* Style for smaller icons in buttons */
 #homeIcon, #infoIcon {
-  font-size: 15px;
+  font-size: 16px;
 }
 
 /* Style for the info dialog */
@@ -93,4 +129,31 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Position styles for buttons */
+#zoomInButton {
+  top: 10px;
+  left: 10px;
+}
+
+#zoomOutButton {
+  top: 45px;
+  left: 10px;
+}
+
+#homeButton {
+  top: 45px;
+  right: 10px;
+}
+
+#infoButton {
+  top: 10px;
+  right: 10px;
+}
+
+.search-widget-container {
+  position: absolute;
+  top: 10px;
+  left: 55px;
 }

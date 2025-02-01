@@ -27,14 +27,12 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     const zoomInButton = document.createElement("button");
     zoomInButton.innerHTML = "+";
     zoomInButton.className = "zoom-button";
-    zoomInButton.style.top = "10px"; // Move up
-    zoomInButton.style.left = "10px";
+    zoomInButton.id = "zoomInButton";
 
     const zoomOutButton = document.createElement("button");
     zoomOutButton.innerHTML = "-";
     zoomOutButton.className = "zoom-button";
-    zoomOutButton.style.top = "45px"; // Move up
-    zoomOutButton.style.left = "10px";
+    zoomOutButton.id = "zoomOutButton";
 
     // Add event listeners for zoom buttons
     zoomInButton.addEventListener("click", function () {
@@ -57,15 +55,44 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
         position: "manual",
         index: 0
     });
-    searchWidget.container.style.position = "absolute";
-    searchWidget.container.style.top = "10px";
-    searchWidget.container.style.left = "55px"; // Adjust to be to the right of the zoom buttons
+    searchWidget.container.classList.add("search-widget-container");
+
+    // Add event listener for search complete
+    searchWidget.on("search-complete", function (event) {
+        const result = event.results[0].results[0];
+        if (result) {
+            const point = result.feature.geometry;
+            view.goTo({
+                target: point,
+                zoom: 10
+            }).then(function () {
+                view.popup.open({
+                    location: point,
+                    features: [result.feature]
+                });
+            });
+
+            // Query the hexFeatureLayer to show the pop-up
+            hexFeatureLayer.queryFeatures({
+                geometry: point,
+                spatialRelationship: "intersects",
+                returnGeometry: true,
+                outFields: ["*"]
+            }).then(function (results) {
+                if (results.features.length > 0) {
+                    view.popup.open({
+                        features: results.features,
+                        location: point
+                    });
+                }
+            });
+        }
+    });
 
     // Create home button
     const homeButton = document.createElement("button");
     homeButton.className = "zoom-button";
-    homeButton.style.top = "45px"; // Position below the info button
-    homeButton.style.right = "10px";
+    homeButton.id = "homeButton";
     const homeIcon = document.createElement("i");
     homeIcon.className = "fas fa-home";
     homeIcon.id = "homeIcon";
@@ -85,8 +112,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     // Create info button
     const infoButton = document.createElement("button");
     infoButton.className = "zoom-button";
-    infoButton.style.top = "10px"; // Position at the top right
-    infoButton.style.right = "10px";
+    infoButton.id = "infoButton";
     const infoIcon = document.createElement("i");
     infoIcon.className = "fas fa-info-circle";
     infoIcon.id = "infoIcon";
@@ -122,8 +148,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
         return new FeatureLayer({
             url: url,
             opacity: transparency, // Set transparency
-            blendMode: "linear-light", // Set blend mode 
-            effect: "bloom(1, 0.3px, 0.1)", // Add bloom effect
+            blendMode: "lighten", // Set blend mode 
+            effect: "bloom(0.8, 0.3px, 0.1)", // Add bloom effect
             renderer: {
                 type: "simple",
                 symbol: {
@@ -140,7 +166,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
                         stops: [
                             { value: 0, opacity: 0.01 },
                             { value: 70, opacity: 0.05 },
-                            { value: 85, opacity: 0.2 },
+                            { value: 85, opacity: 0.10 },
                             { value: 100, opacity: 1 }
                         ]
                     },
@@ -148,12 +174,12 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
                         type: "size",
                         valueExpression: "$view.scale",
                         stops: [
-                            { value: 36978595, size: 1.6 },
-                            { value: 18489298, size: 3.2 },
-                            { value: 9244649, size: 6.4 },
-                            { value: 4622324, size: 12.8 },
-                            { value: 2311162, size: 25.6 },
-                            { value: 577791, size: 51.2 }
+                            { value: 36978595, size: 2 },
+                            { value: 18489298, size: 4 },
+                            { value: 9244649, size: 8 },
+                            { value: 4622324, size: 16 },
+                            { value: 2311162, size: 32 },
+                            { value: 577791, size: 64 }
                         ]
                     }
                 ]
@@ -177,11 +203,10 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     const radius = 10; // Radius for the circular arrangement
     for (let i = 0; i < 18; i++) {
         const angle = i * (360 / 18); // Calculate angle for each symbol
-        const offsetX = radius * Math.cos(angle * (Math.PI / 180));
-        const offsetY = radius * Math.sin(angle * (Math.PI / 180));
+        const offsetX = radius * Math.cos(angle * (Math.PI / 180)) * 0.9;
+        const offsetY = radius * Math.sin(angle * (Math.PI / 180)) * 0.9;
         layers.push(createFeatureLayer(featureLayerUrl, 0.8, offsetX, offsetY, `score${scoreFields[i]}`, colors[colorIndices[i]]));
     }
-
 
     // Add all layers to the map
     layers.forEach(layer => map.add(layer));
@@ -385,7 +410,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     const legendContainer = document.createElement("div");
     legendContainer.id = "legendContainer";
     legendContainer.style.maxHeight = "150px"; // Increased initial height
-    legendContainer.style.width = "200px"; // Set initial width
+    legendContainer.style.width = "250px"; // Set initial width
 
     const legendHeader = document.createElement("div");
     legendHeader.id = "legendHeader";
@@ -393,15 +418,16 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     // Add icon to the legend header
     const legendIcon = document.createElement("img");
     legendIcon.src = "img/icon.png";
-    legendIcon.style.cssText = `
-        width: 20px;
-        height: 20px;
-        vertical-align: middle;
-        margin-right: 5px;
-    `;
     legendHeader.appendChild(legendIcon);
 
-    legendHeader.innerHTML += "Legend";
+    legendHeader.innerHTML += "LEGEND";
+
+    // Add toggle button to the legend header
+    const toggleButton = document.createElement("button");
+    toggleButton.id = "toggleButton";
+    toggleButton.innerHTML = "Show";
+    legendHeader.appendChild(toggleButton);
+
     legendContainer.appendChild(legendHeader);
 
     const legendContent = document.createElement("div");
@@ -414,12 +440,14 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
     legendHeader.addEventListener("click", function () {
         if (legendContent.style.display === "none") {
             legendContent.style.display = "block";
-            legendContainer.style.maxHeight = "300px"; // Expanded height
+            legendContainer.style.maxHeight = "500px"; // Expanded height
             legendContainer.style.width = "500px"; // Expanded width
+            toggleButton.innerHTML = "Hide";
         } else {
             legendContent.style.display = "none";
             legendContainer.style.maxHeight = "50px"; // Collapsed height
-            legendContainer.style.width = "200px"; // Collapsed width
+            legendContainer.style.width = "250px"; // Collapsed width
+            toggleButton.innerHTML = "Show";
         }
     });
 
