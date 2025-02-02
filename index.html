@@ -11,24 +11,34 @@
     <script src="https://js.arcgis.com/4.31/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/button.js"></script>
+    <script src="js/map.js"></script>
 </head>
 
 <body>
     <div id="viewDiv"></div>
-    <div id="infoDialog" style="display: none;">
-        <button id="dialogButton" class="mapButton" onclick="document.getElementById('infoDialog').style.display='none'"
-            style="position: absolute; top: 10px; right: 20px;">
+    <div id="infoDialog">
+        <button id="dialogButton" class="mapButton"
+            onclick="document.getElementById('infoDialog').style.display='none'">
             <i class="fas fa-times"></i>
         </button>
         <div>
-            <p>Welcome to the web map of <b>The United States of Rising Hazards</b>!</p>
-            <p>This is an interactive edition of my previous static map <a
+            <p>
+            <h3 style="text-align:center;">Welcome to the web map of <b>The United States of Rising Hazards</b>!</h3>
+            </p>
+            <p>· This is an interactive edition of my static map <a
                     href="https://cartoguophy.com/maps/us_blooming_risk.html" target="_blank">The United States of the
                     Blooming Risks</a>. Using FEMA’s <a href="https://hazards.fema.gov/nri/" target="_blank">National
-                    Risk Index</a> dataset, this map aggregates the county-level scores of 18 natural hazards, to
-                1K-SQ-MI hexagon units and builds an innovative multivariate visualization with spatial query
-                functionality.</p>
-            <p>The map is designed by Atlas Guo (2025), <a href="https://cartoguophy.com/"
+                    Risk Index (NRI)</a> dataset, this map aggregates the county-level risk scores of 18 types of
+                natural hazards, to
+                1K-square-mile hexagon units across the 50 states, and builds innovative multivariate
+                visualizations with spatial query
+                functionality by clicking or searching.</p>
+            <p>· Note that the map might load very slowly due to numerous map layers with heavy visual effects, thus is
+                not
+                recommended for mobile device
+                users.</p>
+            <p>· This map is designed by Atlas Guo (2025), <a href="https://cartoguophy.com/"
                     target="_blank">CartoGuophy.com</a></p>
         </div>
     </div>
