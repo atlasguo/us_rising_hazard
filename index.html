@@ -18,10 +18,6 @@
 <body>
     <div id="viewDiv"></div>
     <div id="infoDialog">
-        <button id="dialogButton" class="mapButton"
-            onclick="document.getElementById('infoDialog').style.display='none'">
-            <i class="fas fa-times"></i>
-        </button>
         <div>
             <p>
             <h3 style="text-align:center;">Welcome to the web map of <b>The United States of Rising Hazards</b>!</h3>
@@ -32,15 +28,18 @@
                     Risk Index (NRI)</a> dataset, this map aggregates the county-level risk scores of 18 types of
                 natural hazards, to
                 1K-square-mile hexagon units across the 50 states, and builds innovative multivariate
-                visualizations with spatial query
-                functionality by clicking or searching.</p>
+                visualizations with functionalities of layer toggling and spatial query
+                (by clicking or searching).</p>
             <p>· Note that the map might load very slowly due to numerous map layers with heavy visual effects, thus is
                 not
                 recommended for mobile device
                 users.</p>
             <p>· This map is designed by Atlas Guo (2025), <a href="https://cartoguophy.com/"
-                    target="_blank">CartoGuophy.com</a></p>
+                    target="_blank">CartoGuophy.com</a>.</p>
         </div>
+        <button id="exploreButton" onclick="document.getElementById('infoDialog').style.display='none'">
+            Explore the Map
+        </button>
     </div>
 </body>
 

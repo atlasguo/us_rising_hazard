@@ -243,7 +243,76 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 
     view.ui.add(legendContainer, "manual");
 
+    // Add the layer panel to the view
+    view.ui.add(layerPanelContainer, "manual");
+
     // Display info dialog initially
     const initialInfoDialog = document.getElementById("infoDialog");
     initialInfoDialog.style.display = "block"; // Ensure the dialog is displayed
+
+    // Add event listeners for zoom buttons
+    zoomInButton.addEventListener("click", function () {
+        view.zoom += 1;
+    });
+
+    zoomOutButton.addEventListener("click", function () {
+        view.zoom -= 1;
+    });
+
+    // Add event listener for home button
+    homeButton.addEventListener("click", function () {
+        view.goTo({
+            center: [-97, 38], // Default center
+            zoom: 4 // Default zoom level
+        });
+    });
+
+    // Create checkboxes for each layer
+    layers.forEach((layer, index) => {
+        const layerCheckbox = document.createElement("input");
+        layerCheckbox.type = "checkbox";
+        layerCheckbox.id = `layerCheckbox${index}`;
+        layerCheckbox.checked = true; // Initially checked
+        layerCheckbox.addEventListener("change", function () {
+            layer.visible = this.checked;
+        });
+
+        const layerLabel = document.createElement("label");
+        layerLabel.htmlFor = `layerCheckbox${index}`;
+        layerLabel.innerText = layerNames[index];
+        layerLabel.style.color = colors[colorIndices[index]]; // Set the color
+
+        const layerItem = document.createElement("div");
+        layerItem.appendChild(layerCheckbox);
+        layerItem.appendChild(layerLabel);
+        layerPanelContent.appendChild(layerItem);
+    });
+
+    // Add "Show All" and "Clear" buttons
+    const showAllButton = document.createElement("button");
+    showAllButton.id = "showAllButton"; // Add ID for custom styling
+    showAllButton.innerText = "Show All";
+    showAllButton.style.marginRight = "10px"; // Add spacing between buttons
+    showAllButton.addEventListener("click", function () {
+        layers.forEach((layer, index) => {
+            document.getElementById(`layerCheckbox${index}`).checked = true;
+            layer.visible = true;
+        });
+    });
+
+    const clearButton = document.createElement("button");
+    clearButton.id = "clearButton"; // Add ID for custom styling
+    clearButton.innerText = "Clear";
+    clearButton.addEventListener("click", function () {
+        layers.forEach((layer, index) => {
+            document.getElementById(`layerCheckbox${index}`).checked = false;
+            layer.visible = false;
+        });
+    });
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.marginTop = "10px"; // Add spacing above the buttons
+    buttonContainer.appendChild(showAllButton);
+    buttonContainer.appendChild(clearButton);
+    layerPanelContent.appendChild(buttonContainer);
 });

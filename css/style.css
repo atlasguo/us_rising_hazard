@@ -5,6 +5,7 @@ body,
   margin: 0;
   height: 100%;
   width: 100%;
+  font-family: 'Avenir Text', sans-serif; /* Apply default font */
 }
 
 #legendContainer {
@@ -12,7 +13,7 @@ body,
   bottom: 10px;
   right: 10px;
   width: 400px;
-  background-color: rgba(80, 80, 80, 0.8);
+  background-color: rgba(10, 10, 10, 0.7);
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   overflow: hidden;
@@ -23,7 +24,7 @@ body,
 #legendHeader {
   padding: 10px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px; /* Increased font size */
   font-weight: bold; 
   color: white;
   display: flex;
@@ -63,18 +64,13 @@ body,
 
 #legendContent {  
   padding: 5px;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(10, 10, 10, 0.7);
   display: none; /* Initially hidden */
 }
 
 #legendContent img {
   width: 100%;
   border-radius: 5px;  
-}
-
-/* Make zoom buttons semi-transparent */
-button {
-  opacity: 0.7;
 }
 
 /* Make search widget semi-transparent */
@@ -84,26 +80,22 @@ button {
 
 /* Style for the search widget to match the legend font */
 .esri-search__input {
-  font-family: sans-serif;
+  font-family: 'Avenir Text', sans-serif; /* Apply default font */
   font-size: 14px;
 }
 
 /* Common style for map buttons */
-.mapButton {
-  position: absolute;
+.mapButton {  
   width: 33px;
   height: 33px;
   background-color: #eee;
   color: #222;
   border: none;
-  border-radius: 5px;
-  font-size: 20px;
+  border-radius: 5px;  
   cursor: pointer;
-  opacity: 0.7;
-  font-size: 16px;
+  opacity: 0.5;
+  font-size: 15px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Style for the info dialog */
@@ -112,8 +104,8 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(50, 50, 50, 0.85);
-  border-radius: 10px;
+  background-color: rgba(10, 10, 10, 0.7);
+  border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 3%;
   padding-top: 2%;
@@ -133,9 +125,7 @@ button {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  left: 50%; /* Center horizontally */
 }
 
 /* Style for hyperlinks */
@@ -144,14 +134,10 @@ button {
 }
 
 /* Position styles for buttons */
-#zoomInButton {
-  top: 10px;
-  left: 10px;
-}
 
-#zoomOutButton {
-  top: 45px;
-  left: 10px;
+#infoButton {
+  top: 10px;
+  right: 10px;
 }
 
 #homeButton {
@@ -159,13 +145,108 @@ button {
   right: 10px;
 }
 
-#infoButton {
-  top: 10px;
+#zoomInButton {
+  top: 81px;
+  right: 10px;
+}
+
+#zoomOutButton {
+  top: 116px;
   right: 10px;
 }
 
 .search-widget-container {
   position: absolute;
   top: 10px;
-  left: 55px;
+  right: 55px;
+}
+
+/* Styles for the left panel */
+
+#layerPanelContainer {
+  position: absolute;
+  top: 10px; 
+  left: 10px;
+  background-color: rgba(10, 10, 10, 0.7);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: max-width 0.3s ease-out, height 0.3s ease-out;
+  max-width: 50px; /* Initial collapsed width */
+  padding:5px;
+}
+
+#layerPanelHeader {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px; /* Increased font size */
+  font-weight: bold; 
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column; /* Initial vertical layout */
+  line-height:40px;
+}
+
+#layerPanelHeader.vertical {
+  flex-direction: column; /* Vertical layout when collapsed */
+}
+
+#layerPanelHeader i {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+#layerPanelContent {
+  
+  overflow: auto;
+  display: none; /* Initially hidden */
+  font-weight: bold; 
+  padding-top:0px;
+  padding-left:15px;
+  padding-right:15px;
+}
+
+#layerPanelContent p {
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+}
+
+#layerToggleButton { 
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+#showAllButton, #clearButton, #exploreButton {
+  background-color: rgba(100,100,100,0.7); 
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#exploreButton {
+  margin-top:30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Add spacing to the right of each checkbox */
+#layerPanelContent input[type="checkbox"] {
+  margin-right: 10px;
 }

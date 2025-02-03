@@ -213,11 +213,12 @@ const legendIcon = document.createElement("img");
 legendIcon.src = "img/icon.png";
 legendHeader.appendChild(legendIcon);
 
-legendHeader.innerHTML += "Color Legend";
+legendHeader.innerHTML += "Legend (Spectrum)";
 
 // Add toggle button to the legend header
 const toggleButton = document.createElement("button");
 toggleButton.id = "toggleButton";
+toggleButton.className = "mapButton"; // Add mapButton class
 toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
 
 legendHeader.appendChild(toggleButton);
@@ -239,13 +240,70 @@ legendHeader.addEventListener("click", function () {
     if (legendContent.style.display === "none") {
         legendContent.style.display = "block";
         legendContainer.style.maxHeight = "500px"; // Expanded height
-        legendContainer.style.width = "500px"; // Expanded width
+        legendContainer.style.width = "550px"; // Expanded width
         toggleButton.innerHTML = "<i class='fas fa-chevron-down'></i>";
     } else {
         legendContent.style.display = "none";
         legendContainer.style.maxHeight = "50px"; // Collapsed height
         legendContainer.style.width = "250px"; // Collapsed width
         toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
+    }
+});
+
+// Create a collapsible layer panel
+const layerPanelContainer = document.createElement("div");
+layerPanelContainer.id = "layerPanelContainer";
+layerPanelContainer.style.maxWidth = "500px"; // Expanded width by default
+layerPanelContainer.style.height = "500px"; // Expanded height by default
+
+const layerPanelHeader = document.createElement("div");
+layerPanelHeader.id = "layerPanelHeader";
+layerPanelHeader.style.flexDirection = "row"; // Horizontal layout by default
+
+// Add icon to the layer panel header
+const layerPanelIcon = document.createElement("i");
+layerPanelIcon.className = "fas fa-layer-group";
+layerPanelHeader.appendChild(layerPanelIcon);
+
+layerPanelHeader.innerHTML += "Layer";
+
+// Add toggle button to the layer panel header
+const layerToggleButton = document.createElement("button");
+layerToggleButton.id = "layerToggleButton";
+layerToggleButton.className = "mapButton"; // Add mapButton class
+layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+
+layerPanelHeader.appendChild(layerToggleButton);
+
+layerPanelContainer.appendChild(layerPanelHeader);
+
+const layerPanelContent = document.createElement("div");
+layerPanelContent.id = "layerPanelContent";
+layerPanelContent.style.display = "block"; // Initially visible
+
+// Add content to the layer panel
+const layerNames = [
+    "Heat Wave", "Hurricane", "Tornado", "Strong Wind", "Lightning", "Hail",
+    "Ice Storm", "Winter Weather", "Cold Wave", "Avalanche", "Riverine Flooding",
+    "Coastal Flooding", "Landslide", "Tsunami", "Earthquake", "Volcanic Activity",
+    "Wildfire", "Drought"
+];
+
+layerPanelContainer.appendChild(layerPanelContent);
+
+layerPanelHeader.addEventListener("click", function () {
+    if (layerPanelContent.style.display === "none") {
+        layerPanelContent.style.display = "block";
+        layerPanelContainer.style.maxWidth = "500px"; // Expanded width
+        layerPanelContainer.style.height = "500px"; // Expanded height
+        layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+        layerPanelHeader.style.flexDirection = "row"; // Horizontal layout
+    } else {
+        layerPanelContent.style.display = "none";
+        layerPanelContainer.style.maxWidth = "50px"; // Collapsed width
+        layerPanelContainer.style.height = "100px"; // Collapsed height
+        layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
+        layerPanelHeader.style.flexDirection = "column"; // Vertical layout
     }
 });
 

@@ -15,15 +15,6 @@ zoomOutIcon.className = "fas fa-minus";
 zoomOutIcon.id = "zoomOutIcon";
 zoomOutButton.appendChild(zoomOutIcon);
 
-// Add event listeners for zoom buttons
-zoomInButton.addEventListener("click", function () {
-    view.zoom += 1;
-});
-
-zoomOutButton.addEventListener("click", function () {
-    view.zoom -= 1;
-});
-
 // Create home button
 const homeButton = document.createElement("button");
 homeButton.className = "zoom-button mapButton";
@@ -32,14 +23,6 @@ const homeIcon = document.createElement("i");
 homeIcon.className = "fas fa-home";
 homeIcon.id = "homeIcon";
 homeButton.appendChild(homeIcon);
-
-// Add event listener for home button
-homeButton.addEventListener("click", function () {
-    view.goTo({
-        center: [-97, 38], // Default center
-        zoom: 4 // Default zoom level
-    });
-});
 
 // Create info button
 const infoButton = document.createElement("button");
