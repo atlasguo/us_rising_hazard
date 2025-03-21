@@ -1,200 +1,220 @@
 const hexPopupTemplate = {
-    title: "Risk Score in this 1K-sq-mi Hexagon",
-    content: [
-        { type: "text", text: "{expression/color7} Heat Wave: {expression/score7}<br>{expression/color8} Hurricane: {expression/score8}<br>{expression/color14} Tornado: {expression/score14}<br>{expression/color13} Strong Wind: {expression/score13}<br>{expression/color11} Lightning: {expression/score11}<br>{expression/color6} Hail: {expression/score6}<br>{expression/color9} Ice Storm: {expression/score9}<br>{expression/color18} Winter Weather: {expression/score18}<br>{expression/color3} Cold Wave: {expression/score3}<br>{expression/color1} Avalanche: {expression/score1}<br>{expression/color12} Riverine Flooding: {expression/score12}<br>{expression/color2} Coastal Flooding: {expression/score2}<br>{expression/color10} Landslide: {expression/score10}<br>{expression/color15} Tsunami: {expression/score15}<br>{expression/color5} Earthquake: {expression/score5}<br>{expression/color16} Volcanic Activity: {expression/score16}<br>{expression/color17} Wildfire: {expression/score17}<br>{expression/color4} Drought: {expression/score4}" }
-    ],
-    expressionInfos: [
-        {
-            name: "score7",
-            title: "Heat Wave",
-            expression: "Round($feature.score7, 1)"
-        },
-        {
-            name: "score8",
-            title: "Hurricane",
-            expression: "Round($feature.score8, 1)"
-        },
-        {
-            name: "score14",
-            title: "Tornado",
-            expression: "Round($feature.score14, 1)"
-        },
-        {
-            name: "score13",
-            title: "Strong Wind",
-            expression: "Round($feature.score13, 1)"
-        },
-        {
-            name: "score11",
-            title: "Lightning",
-            expression: "Round($feature.score11, 1)"
-        },
-        {
-            name: "score6",
-            title: "Hail",
-            expression: "Round($feature.score6, 1)"
-        },
-        {
-            name: "score9",
-            title: "Ice Storm",
-            expression: "Round($feature.score9, 1)"
-        },
-        {
-            name: "score18",
-            title: "Winter Weather",
-            expression: "Round($feature.score18, 1)"
-        },
-        {
-            name: "score3",
-            title: "Cold Wave",
-            expression: "Round($feature.score3, 1)"
-        },
-        {
-            name: "score1",
-            title: "Avalanche",
-            expression: "Round($feature.score1, 1)"
-        },
-        {
-            name: "score12",
-            title: "Riverine Flooding",
-            expression: "Round($feature.score12, 1)"
-        },
-        {
-            name: "score2",
-            title: "Coastal Flooding",
-            expression: "Round($feature.score2, 1)"
-        },
-        {
-            name: "score10",
-            title: "Landslide",
-            expression: "Round($feature.score10, 1)"
-        },
-        {
-            name: "score15",
-            title: "Tsunami",
-            expression: "Round($feature.score15, 1)"
-        },
-        {
-            name: "score5",
-            title: "Earthquake",
-            expression: "Round($feature.score5, 1)"
-        },
-        {
-            name: "score16",
-            title: "Volcanic Activity",
-            expression: "Round($feature.score16, 1)"
-        },
-        {
-            name: "score17",
-            title: "Wildfire",
-            expression: "Round($feature.score17, 1)"
-        },
-        {
-            name: "score4",
-            title: "Drought",
-            expression: "Round($feature.score4, 1)"
-        },
-        {
-            name: "color7",
-            title: "Heat Wave Color",
-            expression: getColorExpression("score7")
-        },
-        {
-            name: "color8",
-            title: "Hurricane Color",
-            expression: getColorExpression("score8")
-        },
-        {
-            name: "color14",
-            title: "Tornado Color",
-            expression: getColorExpression("score14")
-        },
-        {
-            name: "color13",
-            title: "Strong Wind Color",
-            expression: getColorExpression("score13")
-        },
-        {
-            name: "color11",
-            title: "Lightning Color",
-            expression: getColorExpression("score11")
-        },
-        {
-            name: "color6",
-            title: "Hail Color",
-            expression: getColorExpression("score6")
-        },
-        {
-            name: "color9",
-            title: "Ice Storm Color",
-            expression: getColorExpression("score9")
-        },
-        {
-            name: "color18",
-            title: "Winter Weather Color",
-            expression: getColorExpression("score18")
-        },
-        {
-            name: "color3",
-            title: "Cold Wave Color",
-            expression: getColorExpression("score3")
-        },
-        {
-            name: "color1",
-            title: "Avalanche Color",
-            expression: getColorExpression("score1")
-        },
-        {
-            name: "color12",
-            title: "Riverine Flooding Color",
-            expression: getColorExpression("score12")
-        },
-        {
-            name: "color2",
-            title: "Coastal Flooding Color",
-            expression: getColorExpression("score2")
-        },
-        {
-            name: "color10",
-            title: "Landslide Color",
-            expression: getColorExpression("score10")
-        },
-        {
-            name: "color15",
-            title: "Tsunami Color",
-            expression: getColorExpression("score15")
-        },
-        {
-            name: "color5",
-            title: "Earthquake Color",
-            expression: getColorExpression("score5")
-        },
-        {
-            name: "color16",
-            title: "Volcanic Activity Color",
-            expression: getColorExpression("score16")
-        },
-        {
-            name: "color17",
-            title: "Wildfire Color",
-            expression: getColorExpression("score17")
-        },
-        {
-            name: "color4",
-            title: "Drought Color",
-            expression: getColorExpression("score4")
-        }
-    ]
+	title: "Risk Score in this 1K-sq-mi Hexagon",
+	content: [
+		{
+			type: "text", text: "{expression/color7} Heat Wave: {expression/score7}<br>\
+			{expression/color8} Hurricane: {expression/score8}<br>\
+			{expression/color14} Tornado: {expression/score14}<br>\
+			{expression/color13} Strong Wind: {expression/score13}<br>\
+			{expression/color11} Lightning: {expression/score11}<br>\
+			{expression/color6} Hail: {expression/score6}<br>\
+			{expression/color9} Ice Storm: {expression/score9}<br>\
+			{expression/color18} Winter Weather: {expression/score18}<br>\
+			{expression/color3} Cold Wave: {expression/score3}<br>\
+			{expression/color1} Avalanche: {expression/score1}<br>\
+			{expression/color12} Riverine Flooding: {expression/score12}<br>\
+			{expression/color2} Coastal Flooding: {expression/score2}<br>\
+			{expression/color10} Landslide: {expression/score10}<br>\
+			{expression/color15} Tsunami: {expression/score15}<br>\
+			{expression/color5} Earthquake: {expression/score5}<br>\
+			{expression/color16} Volcanic Activity: {expression/score16}<br>\
+			{expression/color17} Wildfire: {expression/score17}<br>\
+			{expression/color4} Drought: {expression/score4}" }
+	],
+	expressionInfos: [
+		{
+			name: "score7",
+			title: "Heat Wave",
+			expression: "Round($feature.score7, 1)"
+		},
+		{
+			name: "score8",
+			title: "Hurricane",
+			expression: "Round($feature.score8, 1)"
+		},
+		{
+			name: "score14",
+			title: "Tornado",
+			expression: "Round($feature.score14, 1)"
+		},
+		{
+			name: "score13",
+			title: "Strong Wind",
+			expression: "Round($feature.score13, 1)"
+		},
+		{
+			name: "score11",
+			title: "Lightning",
+			expression: "Round($feature.score11, 1)"
+		},
+		{
+			name: "score6",
+			title: "Hail",
+			expression: "Round($feature.score6, 1)"
+		},
+		{
+			name: "score9",
+			title: "Ice Storm",
+			expression: "Round($feature.score9, 1)"
+		},
+		{
+			name: "score18",
+			title: "Winter Weather",
+			expression: "Round($feature.score18, 1)"
+		},
+		{
+			name: "score3",
+			title: "Cold Wave",
+			expression: "Round($feature.score3, 1)"
+		},
+		{
+			name: "score1",
+			title: "Avalanche",
+			expression: "Round($feature.score1, 1)"
+		},
+		{
+			name: "score12",
+			title: "Riverine Flooding",
+			expression: "Round($feature.score12, 1)"
+		},
+		{
+			name: "score2",
+			title: "Coastal Flooding",
+			expression: "Round($feature.score2, 1)"
+		},
+		{
+			name: "score10",
+			title: "Landslide",
+			expression: "Round($feature.score10, 1)"
+		},
+		{
+			name: "score15",
+			title: "Tsunami",
+			expression: "Round($feature.score15, 1)"
+		},
+		{
+			name: "score5",
+			title: "Earthquake",
+			expression: "Round($feature.score5, 1)"
+		},
+		{
+			name: "score16",
+			title: "Volcanic Activity",
+			expression: "Round($feature.score16, 1)"
+		},
+		{
+			name: "score17",
+			title: "Wildfire",
+			expression: "Round($feature.score17, 1)"
+		},
+		{
+			name: "score4",
+			title: "Drought",
+			expression: "Round($feature.score4, 1)"
+		},
+		{
+			name: "color7",
+			title: "Heat Wave Color",
+			expression: getColorExpression("score7")
+		},
+		{
+			name: "color8",
+			title: "Hurricane Color",
+			expression: getColorExpression("score8")
+		},
+		{
+			name: "color14",
+			title: "Tornado Color",
+			expression: getColorExpression("score14")
+		},
+		{
+			name: "color13",
+			title: "Strong Wind Color",
+			expression: getColorExpression("score13")
+		},
+		{
+			name: "color11",
+			title: "Lightning Color",
+			expression: getColorExpression("score11")
+		},
+		{
+			name: "color6",
+			title: "Hail Color",
+			expression: getColorExpression("score6")
+		},
+		{
+			name: "color9",
+			title: "Ice Storm Color",
+			expression: getColorExpression("score9")
+		},
+		{
+			name: "color18",
+			title: "Winter Weather Color",
+			expression: getColorExpression("score18")
+		},
+		{
+			name: "color3",
+			title: "Cold Wave Color",
+			expression: getColorExpression("score3")
+		},
+		{
+			name: "color1",
+			title: "Avalanche Color",
+			expression: getColorExpression("score1")
+		},
+		{
+			name: "color12",
+			title: "Riverine Flooding Color",
+			expression: getColorExpression("score12")
+		},
+		{
+			name: "color2",
+			title: "Coastal Flooding Color",
+			expression: getColorExpression("score2")
+		},
+		{
+			name: "color10",
+			title: "Landslide Color",
+			expression: getColorExpression("score10")
+		},
+		{
+			name: "color15",
+			title: "Tsunami Color",
+			expression: getColorExpression("score15")
+		},
+		{
+			name: "color5",
+			title: "Earthquake Color",
+			expression: getColorExpression("score5")
+		},
+		{
+			name: "color16",
+			title: "Volcanic Activity Color",
+			expression: getColorExpression("score16")
+		},
+		{
+			name: "color17",
+			title: "Wildfire Color",
+			expression: getColorExpression("score17")
+		},
+		{
+			name: "color4",
+			title: "Drought Color",
+			expression: getColorExpression("score4")
+		}
+	]
 };
 
 function getColorExpression(field) {
-    return `
+	return `
         var score = $feature.${field};
         return When(
-            score >= 90, "🟥", 
-            score >= 70, "🟧",  
-            score >= 50, "🟨",  
-            "🟩"               
+            score >= 90, "▉", 
+			score >= 75, "▊", 
+            score >= 60, "▋",  
+			score >= 45, "▍", 
+            score >= 30, "▎",  
+            "▏"               
         );
     `;
 }
@@ -233,21 +253,21 @@ legendContent.appendChild(legendImage);
 legendContainer.appendChild(legendContent);
 
 legendHeader.addEventListener("click", function () {
-    const infoDialog = document.getElementById("infoDialog");
-    if (infoDialog.style.display === "block") {
-        infoDialog.style.display = "none";
-    }
-    if (legendContent.style.display === "none") {
-        legendContent.style.display = "block";
-        legendContainer.style.maxHeight = "500px"; // Expanded height
-        legendContainer.style.width = "550px"; // Expanded width
-        toggleButton.innerHTML = "<i class='fas fa-chevron-down'></i>";
-    } else {
-        legendContent.style.display = "none";
-        legendContainer.style.maxHeight = "50px"; // Collapsed height
-        legendContainer.style.width = "250px"; // Collapsed width
-        toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
-    }
+	const infoDialog = document.getElementById("infoDialog");
+	if (infoDialog.style.display === "block") {
+		infoDialog.style.display = "none";
+	}
+	if (legendContent.style.display === "none") {
+		legendContent.style.display = "block";
+		legendContainer.style.maxHeight = "500px"; // Expanded height
+		legendContainer.style.width = "550px"; // Expanded width
+		toggleButton.innerHTML = "<i class='fas fa-chevron-down'></i>";
+	} else {
+		legendContent.style.display = "none";
+		legendContainer.style.maxHeight = "50px"; // Collapsed height
+		legendContainer.style.width = "250px"; // Collapsed width
+		toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
+	}
 });
 
 // Create a collapsible layer panel
@@ -283,35 +303,35 @@ layerPanelContent.style.display = "block"; // Initially visible
 
 // Add content to the layer panel
 const layerNames = [
-    "Heat Wave", "Hurricane", "Tornado", "Strong Wind", "Lightning", "Hail",
-    "Ice Storm", "Winter Weather", "Cold Wave", "Avalanche", "Riverine Flooding",
-    "Coastal Flooding", "Landslide", "Tsunami", "Earthquake", "Volcanic Activity",
-    "Wildfire", "Drought"
+	"Heat Wave", "Hurricane", "Tornado", "Strong Wind", "Lightning", "Hail",
+	"Ice Storm", "Winter Weather", "Cold Wave", "Avalanche", "Riverine Flooding",
+	"Coastal Flooding", "Landslide", "Tsunami", "Earthquake", "Volcanic Activity",
+	"Wildfire", "Drought"
 ];
 
 layerPanelContainer.appendChild(layerPanelContent);
 
 layerPanelHeader.addEventListener("click", function () {
-    if (layerPanelContent.style.display === "none") {
-        layerPanelContent.style.display = "block";
-        layerPanelContainer.style.maxWidth = "500px"; // Expanded width
-        layerPanelContainer.style.height = "500px"; // Expanded height
-        layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
-        layerPanelHeader.style.flexDirection = "row"; // Horizontal layout
-    } else {
-        layerPanelContent.style.display = "none";
-        layerPanelContainer.style.maxWidth = "50px"; // Collapsed width
-        layerPanelContainer.style.height = "100px"; // Collapsed height
-        layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
-        layerPanelHeader.style.flexDirection = "column"; // Vertical layout
-    }
+	if (layerPanelContent.style.display === "none") {
+		layerPanelContent.style.display = "block";
+		layerPanelContainer.style.maxWidth = "500px"; // Expanded width
+		layerPanelContainer.style.height = "500px"; // Expanded height
+		layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+		layerPanelHeader.style.flexDirection = "row"; // Horizontal layout
+	} else {
+		layerPanelContent.style.display = "none";
+		layerPanelContainer.style.maxWidth = "50px"; // Collapsed width
+		layerPanelContainer.style.height = "100px"; // Collapsed height
+		layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
+		layerPanelHeader.style.flexDirection = "column"; // Vertical layout
+	}
 });
 
 // Define 18 colors in the specified sequence
 const colors = [
-    "#d82626", "#d84726", "#d86826", "#d88926", "#d8ae26", "#c0d826",
-    "#7ed826", "#3cd826", "#26d84e", "#26d890", "#26d8d2", "#269cd8",
-    "#265ad8", "#3326d8", "#7626d8", "#b826d8", "#d826b7", "#d82675"
+	"#d82626", "#d84726", "#d86826", "#d88926", "#d8ae26", "#c0d826",
+	"#7ed826", "#3cd826", "#26d84e", "#26d890", "#26d8d2", "#269cd8",
+	"#265ad8", "#3326d8", "#7626d8", "#b826d8", "#d826b7", "#d82675"
 ];
 
 // Define the order of colors and score fields

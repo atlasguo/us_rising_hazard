@@ -35,19 +35,19 @@ infoButton.appendChild(infoIcon);
 
 // Add event listener for info button
 infoButton.addEventListener("click", function () {
-    const infoDialog = document.getElementById("infoDialog");
-    const legendContent = document.getElementById("legendContent");
-    const legendContainer = document.getElementById("legendContainer");
-    const toggleButton = document.getElementById("toggleButton");
+	const infoDialog = document.getElementById("infoDialog");
+	const legendContent = document.getElementById("legendContent");
+	const legendContainer = document.getElementById("legendContainer");
+	const toggleButton = document.getElementById("toggleButton");
 
-    if (infoDialog.style.display === "block") {
-        infoDialog.style.display = "none";
-    } else {
-        infoDialog.style.display = "block";
-        // Collapse the legend
-        legendContent.style.display = "none";
-        legendContainer.style.maxHeight = "50px"; // Collapsed height
-        legendContainer.style.width = "250px"; // Collapsed width
-        toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
-    }
+	if (infoDialog.style.display === "block") {
+		infoDialog.style.display = "none";
+	} else {
+		infoDialog.style.display = "block";
+		// Collapse the legend
+		legendContent.style.display = "none";
+		legendContainer.style.maxHeight = "50px"; // Collapsed height
+		legendContainer.style.width = "250px"; // Collapsed width
+		toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
+	}
 });
