@@ -16,7 +16,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		},
 		constraints: {
 			minZoom: 3, // Minimum zoom level
-			maxZoom: 9 // Maximum zoom level
+			maxZoom: 8 // Maximum zoom level
 		},
 		ui: {
 			components: [] // Remove default zoom buttons
@@ -59,13 +59,12 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 			const point = result.feature.geometry;
 			view.goTo({
 				target: point,
-				zoom: 10
+				zoom: 4
 			}).then(function () {
 				// view.popup.open({
 				// 	location: point,
 				// 	features: [result.feature]
 				// });
-
 
 				// Query the hexFeatureLayer to show the pop-up
 				hexFeatureLayer.queryFeatures({
@@ -75,6 +74,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 					outFields: ["*"]
 				}).then(function (results) {
 					if (results.features.length > 0) {
+
 						view.popup.open({
 							features: results.features,
 							location: point
@@ -88,6 +88,16 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		}
 	});
 
+	// Add event listener for map click to show popup
+	view.on("click", function (event) {
+		view.hitTest(event).then(function (response) {
+			if (response.results.length) {
+				// Hide the infoDialog
+				const infoDialog = document.getElementById("infoDialog");
+				infoDialog.style.display = "none";
+			}
+		});
+	});
 
 	// Define the Feature Layer URL
 	const featureLayerUrl = "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/usbr_point/FeatureServer";

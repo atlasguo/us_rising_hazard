@@ -1,5 +1,5 @@
 const hexPopupTemplate = {
-	title: "Risk Score in this 1K-sq-mi Hexagon",
+	title: "Risk Score of Selected 1K-SQ-MI Hexagon",
 	content: [
 		{
 			type: "text", text: "{expression/color7} Heat Wave: {expression/score7}<br>\

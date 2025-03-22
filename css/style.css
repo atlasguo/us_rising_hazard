@@ -1,252 +1,265 @@
 html,
 body,
 #viewDiv {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  font-family: 'Avenir Text', sans-serif; /* Apply default font */
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	font-family: 'Avenir Text', sans-serif;
+	/* Apply default font */
 }
 
 #legendContainer {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 400px;
-  background-color: rgba(10, 10, 10, 0.7);
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-  max-height: 25px; /* Collapsed height */
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 400px;
+	background-color: rgba(10, 10, 10, 0.7);
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+	max-height: 25px;
+	/* Collapsed height */
 }
 
 #legendHeader {
-  padding: 10px;
-  cursor: pointer;
-  font-size: 16px; /* Increased font size */
-  font-weight: bold; 
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	padding: 10px;
+	cursor: pointer;
+	font-size: 16px;
+	/* Increased font size */
+	font-weight: bold;
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 #legendHeader img {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
 }
 
 #legendContent {
-  max-height: 400px; /* Expanded height */
-  overflow: auto;
+	max-height: 400px;
+	/* Expanded height */
+	overflow: auto;
 }
 
 #legendContent img {
-  width: 100%;
-  display: block;
+	width: 100%;
+	display: block;
 }
 
 #infoDialog {
-  display: none;
+	display: none;
 }
 
 #toggleButton {
-  background-color: #eee;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  opacity: 0.7;
+	background-color: #eee;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	opacity: 0.7;
 }
 
-#legendContent {  
-  padding: 5px;
-  background-color: rgba(10, 10, 10, 0.7);
-  display: none; /* Initially hidden */
+#legendContent {
+	padding: 5px;
+	background-color: rgba(10, 10, 10, 0.7);
+	display: none;
+	/* Initially hidden */
 }
 
 #legendContent img {
-  width: 100%;
-  border-radius: 5px;  
+	width: 100%;
+	border-radius: 5px;
 }
 
 /* Make search widget semi-transparent */
 .esri-search {
-  opacity: 0.85;
+	opacity: 0.85;
 }
 
 /* Style for the search widget to match the legend font */
 .esri-search__input {
-  font-family: 'Avenir Text', sans-serif; /* Apply default font */
-  font-size: 14px;
+	font-family: 'Avenir Text', sans-serif;
+	/* Apply default font */
+	font-size: 14px;
 }
 
 /* Common style for map buttons */
-.mapButton {  
-  width: 33px;
-  height: 33px;
-  background-color: #eee;
-  color: #222;
-  border: none;
-  border-radius: 5px;  
-  cursor: pointer;
-  opacity: 0.5;
-  font-size: 15px;
-  display: block;
+.mapButton {
+	width: 33px;
+	height: 33px;
+	background-color: #eee;
+	color: #222;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	opacity: 0.5;
+	font-size: 15px;
+	display: block;
 }
 
 /* Style for the info dialog */
 #infoDialog {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(10, 10, 10, 0.7);
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 3%;
-  padding-top: 2%;
-  width: 50%;  
-  color: white;
-  text-align:left;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: rgba(10, 10, 10, 0.7);
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	padding: 3%;
+	padding-top: 2%;
+	width: 50%;
+	color: white;
+	text-align: left;
 }
 
 /* Style for the close button */
 #dialogButton {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #eee;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  left: 50%; /* Center horizontally */
+	margin-top: 10px;
+	padding: 5px 10px;
+	background-color: #eee;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	left: 50%;
+	/* Center horizontally */
 }
 
 /* Style for hyperlinks */
 #infoDialog a {
-  color: rgb(94, 220, 255);
+	color: rgb(94, 220, 255);
 }
 
 /* Position styles for buttons */
-
 #infoButton {
-  top: 10px;
-  right: 10px;
+	top: 10px;
+	right: 10px;
 }
 
 #homeButton {
-  top: 45px;
-  right: 10px;
+	top: 45px;
+	right: 10px;
 }
 
 #zoomInButton {
-  top: 81px;
-  right: 10px;
+	top: 81px;
+	right: 10px;
 }
 
 #zoomOutButton {
-  top: 116px;
-  right: 10px;
+	top: 116px;
+	right: 10px;
 }
 
 .search-widget-container {
-  position: absolute;
-  top: 10px;
-  right: 55px;
+	position: absolute;
+	top: 10px;
+	right: 55px;
 }
 
 /* Styles for the left panel */
-
 #layerPanelContainer {
-  position: absolute;
-  top: 10px; 
-  left: 10px;
-  background-color: rgba(10, 10, 10, 0.7);
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  transition: max-width 0.3s ease-out, height 0.3s ease-out;
-  max-width: 50px; /* Initial collapsed width */
-  padding:5px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: rgba(10, 10, 10, 0.7);
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+	transition: max-width 0.3s ease-out, height 0.3s ease-out;
+	max-width: 50px;
+	/* Initial collapsed width */
+	padding: 5px;
 }
 
 #layerPanelHeader {
-  padding: 10px;
-  cursor: pointer;
-  font-size: 16px; /* Increased font size */
-  font-weight: bold; 
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column; /* Initial vertical layout */
-  line-height:40px;
+	padding: 10px;
+	cursor: pointer;
+	font-size: 16px;
+	/* Increased font size */
+	font-weight: bold;
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+	/* Initial vertical layout */
+	line-height: 40px;
 }
 
 #layerPanelHeader.vertical {
-  flex-direction: column; /* Vertical layout when collapsed */
+	flex-direction: column;
+	/* Vertical layout when collapsed */
 }
 
 #layerPanelHeader i {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
 }
 
 #layerPanelContent {
-  
-  overflow: auto;
-  display: none; /* Initially hidden */
-  font-weight: bold; 
-  padding-top:0px;
-  padding-left:15px;
-  padding-right:15px;
+	overflow: auto;
+	display: none;
+	/* Initially hidden */
+	font-weight: bold;
+	padding-top: 0px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 #layerPanelContent p {
-  padding: 5px;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 5px;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
 }
 
-#layerToggleButton { 
-  background-color: #eee;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  opacity: 0.7;
+#layerToggleButton {
+	background-color: #eee;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	opacity: 0.7;
 }
 
-#showAllButton, #clearButton, #exploreButton {
-  background-color: rgba(100,100,100,0.7); 
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 5px;
+#showAllButton,
+#clearButton,
+#exploreButton {
+	background-color: rgba(100, 100, 100, 0.7);
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 5px;
+	font-family: 'Avenir Text', sans-serif;
 }
 
 #exploreButton {
-  margin-top:30px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+	margin-top: 30px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
 }
 
 /* Add spacing to the right of each checkbox */
 #layerPanelContent input[type="checkbox"] {
-  margin-right: 10px;
+	margin-right: 10px;
 }
