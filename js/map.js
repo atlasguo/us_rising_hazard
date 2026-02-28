@@ -49,43 +49,35 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 
 	// Add event listener for search complete
 	searchWidget.on("search-complete", function (event) {
+		const result = event?.results?.[0]?.results?.[0];
+		if (!result || !result.feature || !result.feature.geometry) {
+			return;
+		}
 
 		// Hide the infoDialog
 		const infoDialog = document.getElementById("infoDialog");
 		infoDialog.style.display = "none";
 
-		const result = event.results[0].results[0];
-		if (result) {
-			const point = result.feature.geometry;
-			view.goTo({
-				target: point,
-				zoom: 4
-			}).then(function () {
-				// view.popup.open({
-				// 	location: point,
-				// 	features: [result.feature]
-				// });
-
-				// Query the hexFeatureLayer to show the pop-up
-				hexFeatureLayer.queryFeatures({
-					geometry: point,
-					spatialRelationship: "intersects",
-					returnGeometry: true,
-					outFields: ["*"]
-				}).then(function (results) {
-					if (results.features.length > 0) {
-
-						view.popup.open({
-							features: results.features,
-							location: point
-						});
-						// Increase the height of the popup window
-						view.popup.viewModel.container.style.height = "1.5em";
-					}
-				});
-
+		const point = result.feature.geometry;
+		view.goTo({
+			target: point,
+			zoom: 4
+		}).then(function () {
+			// Query the hexFeatureLayer to show the pop-up
+			hexFeatureLayer.queryFeatures({
+				geometry: point,
+				spatialRelationship: "intersects",
+				returnGeometry: true,
+				outFields: ["*"]
+			}).then(function (results) {
+				if (results.features.length > 0) {
+					view.popup.open({
+						features: results.features,
+						location: point
+					});
+				}
 			});
-		}
+		});
 	});
 
 	// Add event listener for map click to show popup
@@ -107,7 +99,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		return new FeatureLayer({
 			url: url,
 			opacity: transparency, // Set transparency
-			blendMode: "lighten", // Set blend mode 
+			blendMode: "lighten", // Set blend mode
 			effect: "bloom(0.8, 0.3px, 0.1)", // Add bloom effect
 			renderer: {
 				type: "simple",
@@ -138,7 +130,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 							{ value: 9244649, size: 7.2 },
 							{ value: 4622324, size: 14.4 },
 							{ value: 2311162, size: 28.8 },
-							{ value: 577791, size: 57.6 },
+							{ value: 577791, size: 57.6 }
 						]
 					}
 				]
@@ -202,7 +194,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 	// Create a state FeatureLayer with white border and no fill color
 	const stateFeatureLayer = new FeatureLayer({
 		url: stateFeatureLayerUrl,
-		opacity: 0.5, // Set initial opacity to 50%        
+		opacity: 0.5, // Set initial opacity to 50%
 		renderer: {
 			type: "simple",
 			symbol: {
@@ -216,44 +208,44 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		}
 	});
 
-	// Define the state Feature Layer URL
-	const countryFeatureLayerUrl = "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/us_boundary/FeatureServer";
-
-	// Create a state FeatureLayer with white border and no fill color
-	const countryFeatureLayer = new FeatureLayer({
-		url: countryFeatureLayerUrl,
-		opacity: 0.5, // Set initial opacity to 50%        
-		renderer: {
-			type: "simple",
-			symbol: {
-				type: "simple-fill", // Change symbol type to simple-fill
-				color: [255, 0, 0, 1], // No fill color
-				outline: {
-					color: [255, 255, 255, 0.1], // White border
-					width: 3
-				}
-			}
-		}
-	});
-
-	// Add the state and country layer to the map
+	// Add the state layer to the map
 	map.add(stateFeatureLayer);
-	//map.add(countryFeatureLayer);
+
+	function applyGlowIntensity(percent) {
+		const normalized = Math.max(0, Math.min(1.2, percent / 100));
+		const pointBloom = normalized.toFixed(2);
+		const hexBloom = (0.25 + normalized * 0.95).toFixed(2);
+
+		layers.forEach(function (layer) {
+			layer.effect = `bloom(${pointBloom}, 0.3px, 0.1)`;
+		});
+
+		hexFeatureLayer.effect = `bloom(${hexBloom}, 1px, 0.1)`;
+		view.environment.bloomEnabled = normalized > 0;
+	}
+
+	// Constrain panning to U.S. states extent (including AK and HI)
+	stateFeatureLayer.when(function () {
+		if (!stateFeatureLayer.fullExtent) {
+			return;
+		}
+
+		const usExtent = stateFeatureLayer.fullExtent.clone().expand(1.03);
+		view.constraints = {
+			geometry: usExtent,
+			minZoom: 3,
+			maxZoom: 8
+		};
+	});
 
 	// Watch for scale changes and update opacity and width
 	view.watch("scale", function (newValue) {
 		if (newValue <= 9244649) {
 			stateFeatureLayer.opacity = 0.75;
 			stateFeatureLayer.renderer.symbol.outline.width = 2;
-
-			countryFeatureLayer.opacity = 0.75;
-			countryFeatureLayer.renderer.symbol.outline.width = 5;
 		} else {
 			stateFeatureLayer.opacity = 0.5;
 			stateFeatureLayer.renderer.symbol.outline.width = 1.2;
-
-			countryFeatureLayer.opacity = 0.5;
-			countryFeatureLayer.renderer.symbol.outline.width = 3;
 		}
 	});
 
@@ -261,6 +253,22 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 
 	// Add the layer panel to the view
 	view.ui.add(layerPanelContainer, "manual");
+
+	// Add the glow control panel to the view
+	view.ui.add(glowControlContainer, "manual");
+
+	const glowSlider = document.getElementById("glowSlider");
+	const glowValue = document.getElementById("glowValue");
+	if (glowSlider && glowValue) {
+		const updateGlow = function () {
+			const percent = Number(glowSlider.value) || 0;
+			glowValue.textContent = `${percent}%`;
+			applyGlowIntensity(percent);
+		};
+
+		glowSlider.addEventListener("input", updateGlow);
+		updateGlow();
+	}
 
 	// Display info dialog initially
 	const initialInfoDialog = document.getElementById("infoDialog");
@@ -296,7 +304,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		const layerLabel = document.createElement("label");
 		layerLabel.htmlFor = `layerCheckbox${index}`;
 		layerLabel.innerText = layerNames[index];
-		layerLabel.style.color = colors[colorIndices[index]]; // Set the color
+		layerLabel.style.color = colors[colorIndices[index]];
 
 		const layerItem = document.createElement("div");
 		layerItem.appendChild(layerCheckbox);

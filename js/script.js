@@ -222,8 +222,8 @@ function getColorExpression(field) {
 // Create a collapsible legend section
 const legendContainer = document.createElement("div");
 legendContainer.id = "legendContainer";
-legendContainer.style.maxHeight = "150px"; // Increased initial height
-legendContainer.style.width = "250px"; // Set initial width
+legendContainer.style.maxHeight = "58px";
+legendContainer.style.width = "320px";
 
 const legendHeader = document.createElement("div");
 legendHeader.id = "legendHeader";
@@ -233,7 +233,7 @@ const legendIcon = document.createElement("img");
 legendIcon.src = "img/icon.png";
 legendHeader.appendChild(legendIcon);
 
-legendHeader.innerHTML += "Legend (Spectrum)";
+legendHeader.innerHTML += "LEGEND (Spectrum)";
 
 // Add toggle button to the legend header
 const toggleButton = document.createElement("button");
@@ -259,13 +259,13 @@ legendHeader.addEventListener("click", function () {
 	}
 	if (legendContent.style.display === "none") {
 		legendContent.style.display = "block";
-		legendContainer.style.maxHeight = "500px"; // Expanded height
-		legendContainer.style.width = "550px"; // Expanded width
+		legendContainer.style.maxHeight = "520px";
+		legendContainer.style.width = "420px";
 		toggleButton.innerHTML = "<i class='fas fa-chevron-down'></i>";
 	} else {
 		legendContent.style.display = "none";
-		legendContainer.style.maxHeight = "50px"; // Collapsed height
-		legendContainer.style.width = "250px"; // Collapsed width
+		legendContainer.style.maxHeight = "58px";
+		legendContainer.style.width = "320px";
 		toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
 	}
 });
@@ -273,8 +273,30 @@ legendHeader.addEventListener("click", function () {
 // Create a collapsible layer panel
 const layerPanelContainer = document.createElement("div");
 layerPanelContainer.id = "layerPanelContainer";
-layerPanelContainer.style.maxWidth = "500px"; // Expanded width by default
-layerPanelContainer.style.height = "500px"; // Expanded height by default
+layerPanelContainer.style.maxWidth = "360px";
+
+function getExpandedLayerPanelHeight() {
+	// Keep panel tall enough for larger line-height while staying inside viewport.
+	return `${Math.min(window.innerHeight - 120, 500)}px`;
+}
+
+function setLayerPanelExpandedState(isExpanded) {
+	if (isExpanded) {
+		layerPanelContainer.classList.remove("is-collapsed");
+		layerPanelContainer.style.maxWidth = "360px";
+		layerPanelContainer.style.height = getExpandedLayerPanelHeight();
+		layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+		layerPanelHeader.style.flexDirection = "row";
+		layerPanelContent.style.display = "block";
+	} else {
+		layerPanelContainer.classList.add("is-collapsed");
+		layerPanelContainer.style.maxWidth = "52px";
+		layerPanelContainer.style.height = "112px";
+		layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
+		layerPanelHeader.style.flexDirection = "column";
+		layerPanelContent.style.display = "none";
+	}
+}
 
 const layerPanelHeader = document.createElement("div");
 layerPanelHeader.id = "layerPanelHeader";
@@ -285,7 +307,7 @@ const layerPanelIcon = document.createElement("i");
 layerPanelIcon.className = "fas fa-layer-group";
 layerPanelHeader.appendChild(layerPanelIcon);
 
-layerPanelHeader.innerHTML += "Layer";
+layerPanelHeader.innerHTML += "LAYER";
 
 // Add toggle button to the layer panel header
 const layerToggleButton = document.createElement("button");
@@ -300,6 +322,7 @@ layerPanelContainer.appendChild(layerPanelHeader);
 const layerPanelContent = document.createElement("div");
 layerPanelContent.id = "layerPanelContent";
 layerPanelContent.style.display = "block"; // Initially visible
+layerPanelContainer.style.height = getExpandedLayerPanelHeight();
 
 // Add content to the layer panel
 const layerNames = [
@@ -313,19 +336,42 @@ layerPanelContainer.appendChild(layerPanelContent);
 
 layerPanelHeader.addEventListener("click", function () {
 	if (layerPanelContent.style.display === "none") {
-		layerPanelContent.style.display = "block";
-		layerPanelContainer.style.maxWidth = "500px"; // Expanded width
-		layerPanelContainer.style.height = "500px"; // Expanded height
-		layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
-		layerPanelHeader.style.flexDirection = "row"; // Horizontal layout
+		setLayerPanelExpandedState(true);
 	} else {
-		layerPanelContent.style.display = "none";
-		layerPanelContainer.style.maxWidth = "50px"; // Collapsed width
-		layerPanelContainer.style.height = "100px"; // Collapsed height
-		layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
-		layerPanelHeader.style.flexDirection = "column"; // Vertical layout
+		setLayerPanelExpandedState(false);
 	}
 });
+
+window.addEventListener("resize", function () {
+	if (layerPanelContent.style.display !== "none") {
+		layerPanelContainer.style.height = getExpandedLayerPanelHeight();
+	}
+});
+
+// Glow control panel
+const glowControlContainer = document.createElement("div");
+glowControlContainer.id = "glowControlContainer";
+
+const glowControlHeader = document.createElement("div");
+glowControlHeader.id = "glowControlHeader";
+glowControlHeader.textContent = "GLOW EFFECT";
+
+const glowControlValue = document.createElement("span");
+glowControlValue.id = "glowValue";
+glowControlValue.textContent = "80%";
+glowControlHeader.appendChild(glowControlValue);
+
+const glowSlider = document.createElement("input");
+glowSlider.id = "glowSlider";
+glowSlider.type = "range";
+glowSlider.min = "0";
+glowSlider.max = "120";
+glowSlider.value = "80";
+glowSlider.step = "1";
+glowSlider.setAttribute("aria-label", "Glow effect intensity");
+
+glowControlContainer.appendChild(glowControlHeader);
+glowControlContainer.appendChild(glowSlider);
 
 // Define 18 colors in the specified sequence
 const colors = [
