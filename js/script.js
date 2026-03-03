@@ -247,9 +247,17 @@ legendContainer.appendChild(legendHeader);
 
 const legendContent = document.createElement("div");
 legendContent.id = "legendContent";
+legendContent.style.display = "none";
+const legendImageWrapper = document.createElement("div");
+legendImageWrapper.className = "legend-image-wrapper";
 const legendImage = document.createElement("img");
 legendImage.src = "img/legend.png";
-legendContent.appendChild(legendImage);
+legendImage.alt = "Legend for 18 hazard layers";
+const legendHotspotLayer = document.createElement("div");
+legendHotspotLayer.className = "legend-hotspot-layer";
+legendImageWrapper.appendChild(legendImage);
+legendImageWrapper.appendChild(legendHotspotLayer);
+legendContent.appendChild(legendImageWrapper);
 legendContainer.appendChild(legendContent);
 
 legendHeader.addEventListener("click", function () {
@@ -333,7 +341,10 @@ const layerPanelIcon = document.createElement("i");
 layerPanelIcon.className = "fas fa-layer-group";
 layerPanelHeader.appendChild(layerPanelIcon);
 
-layerPanelHeader.innerHTML += "LAYER";
+const layerPanelTitle = document.createElement("span");
+layerPanelTitle.id = "layerPanelTitle";
+layerPanelTitle.textContent = "LAYER";
+layerPanelHeader.appendChild(layerPanelTitle);
 
 // Add toggle button to the layer panel header
 const layerToggleButton = document.createElement("button");
@@ -358,6 +369,103 @@ const layerNames = [
 	"Coastal Flooding", "Landslide", "Tsunami", "Earthquake", "Volcanic Activity",
 	"Wildfire", "Drought"
 ];
+const layerIndexByName = new Map(layerNames.map((name, index) => [name, index]));
+window.layerIndexByName = layerIndexByName;
+
+const legendHotspots = [
+	{ layerName: "Hail", xPct: 42.3, yPct: 18.9, wPct: 7.7, hPct: 6.1 },
+	{ layerName: "Lightning", xPct: 50, yPct: 18.9, wPct: 15.0, hPct: 6.1 },
+	{ layerName: "Strong Wind", xPct: 52.6, yPct: 25.6, wPct: 23.9, hPct: 6.1 },
+	{ layerName: "Tornado", xPct: 59.7, yPct: 33.7, wPct: 10.6, hPct: 6.1 },
+	{ layerName: "Hurricane", xPct: 63.2, yPct: 41.0, wPct: 8.7, hPct: 6.1 },
+	{ layerName: "Heat Wave", xPct: 58.5, yPct: 48.9, wPct: 21.1, hPct: 6.1 },
+	{ layerName: "Drought", xPct: 60.5, yPct: 57.3, wPct: 12.7, hPct: 6.1 },
+	{ layerName: "Wildfire", xPct: 61.0, yPct: 65.0, wPct: 7.8, hPct: 6.1 },
+	{ layerName: "Volcanic Activity", xPct: 60.2, yPct: 72.8, wPct: 14.0, hPct: 6.5 },
+	{ layerName: "Earthquake", xPct: 52.0, yPct: 80.3, wPct: 13.6, hPct: 6.3 },
+	{ layerName: "Tsunami", xPct: 38.5, yPct: 80.3, wPct: 10.4, hPct: 6.3 },
+	{ layerName: "Landslide", xPct: 32.6, yPct: 72.8, wPct: 10.2, hPct: 6.5 },
+	{ layerName: "Coastal Flooding", xPct: 21.2, yPct: 65.1, wPct: 18.2, hPct: 6.1 },
+	{ layerName: "Riverine Flooding", xPct: 19.9, yPct: 57.3, wPct: 15.5, hPct: 6.1 },
+	{ layerName: "Avalanche", xPct: 26.5, yPct: 49.0, wPct: 10.2, hPct: 6.1 },
+	{ layerName: "Cold Wave", xPct: 22.0, yPct: 41.1, wPct: 20.0, hPct: 6.1 },
+	{ layerName: "Winter Weather", xPct: 16.4, yPct: 33.6, wPct: 28.3, hPct: 6.1 },
+	{ layerName: "Ice Storm", xPct: 28.0, yPct: 25.5, wPct: 19.3, hPct: 6.1 }
+];
+
+function renderLegendHotspots() {
+	legendHotspotLayer.innerHTML = "";
+	const heightScale = 0.88;
+	const globalYShift = -4.0;
+	const verticalCenter = 50;
+	const yCompression = 0.88;
+	const globalXShift = 0;
+	const referenceNames = new Set(["Hail", "Lightning"]);
+	const referenceHotspots = legendHotspots.filter((item) => referenceNames.has(item.layerName));
+
+	function getLabelLength(name) {
+		return name.replace(/\s+/g, "").length;
+	}
+
+	function estimateWidthByReference(name, fallbackWidth) {
+		if (referenceHotspots.length < 2) {
+			return fallbackWidth;
+		}
+
+		const refA = referenceHotspots[0];
+		const refB = referenceHotspots[1];
+		const lenA = getLabelLength(refA.layerName);
+		const lenB = getLabelLength(refB.layerName);
+		if (lenA === lenB) {
+			return fallbackWidth;
+		}
+
+		const slope = (refB.wPct - refA.wPct) / (lenB - lenA);
+		const intercept = refA.wPct - slope * lenA;
+		const estimated = intercept + slope * getLabelLength(name);
+
+		return Math.max(fallbackWidth * 0.75, Math.min(fallbackWidth * 1.6, estimated));
+	}
+
+	legendHotspots.forEach(function (hotspot) {
+		const hotspotButton = document.createElement("button");
+		hotspotButton.type = "button";
+		hotspotButton.className = "legend-hotspot";
+		hotspotButton.dataset.layerName = hotspot.layerName;
+		hotspotButton.setAttribute("aria-label", `Toggle ${hotspot.layerName} layer`);
+		// Keep middle nearly stable while pulling top down and bottom up.
+		const adjustedTop = verticalCenter + (hotspot.yPct + globalYShift - verticalCenter) * yCompression;
+		const adjustedHeight = hotspot.hPct * heightScale;
+		const shiftedLeft = hotspot.xPct + globalXShift;
+		const shiftedCenter = shiftedLeft + hotspot.wPct / 2;
+		const adjustedWidth = referenceNames.has(hotspot.layerName)
+			? hotspot.wPct
+			: estimateWidthByReference(hotspot.layerName, hotspot.wPct);
+		const adjustedLeft = shiftedCenter - adjustedWidth / 2;
+		hotspotButton.style.left = `${adjustedLeft}%`;
+		hotspotButton.style.top = `${adjustedTop}%`;
+		hotspotButton.style.width = `${adjustedWidth}%`;
+		hotspotButton.style.height = `${adjustedHeight}%`;
+
+		const layerIndex = layerIndexByName.get(hotspot.layerName);
+		if (typeof layerIndex !== "number") {
+			console.warn(`[legend-hotspot] Unknown layer name "${hotspot.layerName}"`);
+			hotspotButton.disabled = true;
+		} else {
+			hotspotButton.addEventListener("click", function () {
+				if (typeof window.toggleLayerVisibilityByName === "function") {
+					window.toggleLayerVisibilityByName(hotspot.layerName);
+				} else {
+					console.warn("[legend-hotspot] toggleLayerVisibilityByName is not ready yet.");
+				}
+			});
+		}
+
+		legendHotspotLayer.appendChild(hotspotButton);
+	});
+}
+
+renderLegendHotspots();
 
 layerPanelContainer.appendChild(layerPanelContent);
 
@@ -382,12 +490,21 @@ glowControlContainer.id = "glowControlContainer";
 
 const glowControlHeader = document.createElement("div");
 glowControlHeader.id = "glowControlHeader";
-glowControlHeader.textContent = "GLOW EFFECT";
+const glowControlTitle = document.createElement("span");
+glowControlTitle.id = "glowControlTitle";
+glowControlTitle.textContent = "GLOW EFFECT";
+glowControlHeader.appendChild(glowControlTitle);
 
 const glowControlValue = document.createElement("span");
 glowControlValue.id = "glowValue";
 glowControlValue.textContent = "80%";
 glowControlHeader.appendChild(glowControlValue);
+
+const glowToggleButton = document.createElement("button");
+glowToggleButton.id = "glowToggleButton";
+glowToggleButton.className = "mapButton";
+glowToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+glowControlHeader.appendChild(glowToggleButton);
 
 const glowSlider = document.createElement("input");
 glowSlider.id = "glowSlider";
@@ -398,8 +515,28 @@ glowSlider.value = "80";
 glowSlider.step = "1";
 glowSlider.setAttribute("aria-label", "Glow effect intensity");
 
+const glowControlBody = document.createElement("div");
+glowControlBody.id = "glowControlBody";
+glowControlBody.appendChild(glowSlider);
+
+function setGlowControlExpandedState(isExpanded) {
+	if (isExpanded) {
+		glowControlContainer.classList.remove("is-collapsed");
+		glowToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
+	} else {
+		glowControlContainer.classList.add("is-collapsed");
+		glowToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
+	}
+}
+
+glowControlHeader.addEventListener("click", function () {
+	const isCollapsed = glowControlContainer.classList.contains("is-collapsed");
+	setGlowControlExpandedState(isCollapsed);
+});
+
 glowControlContainer.appendChild(glowControlHeader);
-glowControlContainer.appendChild(glowSlider);
+glowControlContainer.appendChild(glowControlBody);
+setGlowControlExpandedState(window.innerWidth > 900);
 
 // Define 18 colors in the specified sequence
 const colors = [

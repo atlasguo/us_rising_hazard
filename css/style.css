@@ -88,6 +88,44 @@ body,
 	display: block;
 }
 
+.legend-image-wrapper {
+	position: relative;
+	width: 100%;
+}
+
+.legend-hotspot-layer {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.legend-hotspot {
+	position: absolute;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	min-height: 18px;
+	cursor: pointer;
+	pointer-events: auto;
+	touch-action: manipulation;
+	transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.legend-hotspot:hover {
+	border-color: rgba(255, 255, 255, 0.45);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.legend-hotspot:focus-visible {
+	outline: 2px solid rgba(255, 255, 255, 0.9);
+	outline-offset: 1px;
+	border-color: rgba(255, 255, 255, 0.75);
+	background: rgba(255, 255, 255, 0.10);
+}
+
 #infoDialog {
 	display: none;
 	position: absolute;
@@ -138,12 +176,35 @@ body,
 	overflow: hidden;
 	width: 340px !important;
 	max-height: 490px !important;
+	background: rgba(22, 22, 22, 0.96) !important;
+	color: #f2f2f2 !important;
 }
 
 .esri-popup__header,
 .esri-popup__content,
 .esri-popup__footer {
 	border-radius: 0;
+	background: rgba(22, 22, 22, 0.96) !important;
+	color: #f2f2f2 !important;
+	border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.esri-popup__header-title,
+.esri-popup__content,
+.esri-popup__content * {
+	color: #f2f2f2 !important;
+}
+
+.esri-popup__button,
+.esri-popup__action,
+.esri-popup__header-buttons .esri-popup__button {
+	color: #e6e6e6 !important;
+}
+
+.esri-popup__button:hover,
+.esri-popup__action:hover,
+.esri-popup__header-buttons .esri-popup__button:hover {
+	background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .esri-popup--shadow {
@@ -186,6 +247,8 @@ body,
 	height: 36px;
 	border-radius: var(--radius-md);
 	overflow: visible;
+	background: rgba(24, 24, 24, 0.94);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32), 0 0 12px rgba(210, 210, 210, 0.10);
 }
 
 .esri-search__container {
@@ -194,6 +257,8 @@ body,
 	height: 36px;
 	display: flex;
 	align-items: center;
+	background: rgba(24, 24, 24, 0.94);
+	border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .esri-search__input {
@@ -205,6 +270,8 @@ body,
 	border: none !important;
 	box-shadow: none !important;
 	outline: none;
+	background: rgba(24, 24, 24, 0.94) !important;
+	color: #f1f1f1 !important;
 }
 
 .esri-search__input-container,
@@ -219,6 +286,7 @@ body,
 	overflow: hidden;
 	display: flex;
 	align-items: center;
+	background: rgba(24, 24, 24, 0.94) !important;
 }
 
 .esri-search__submit-button {
@@ -228,6 +296,13 @@ body,
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 36px;
+	height: 36px;
+	padding: 0 !important;
+	position: relative;
+	top: 1px;
+	background: rgba(34, 34, 34, 0.96) !important;
+	color: #e6e6e6 !important;
 }
 
 .esri-search__input.esri-input {
@@ -238,10 +313,30 @@ body,
 }
 
 .esri-search__clear-button {
+	width: 36px;
 	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding: 0 !important;
+	background: rgba(34, 34, 34, 0.96) !important;
+	color: #d8d8d8 !important;
+}
+
+.esri-search__submit-button .esri-icon-search,
+.esri-search__clear-button .esri-icon-close {
+	display: block;
+	line-height: 1 !important;
+	font-size: 15px;
+}
+
+.esri-search__input::placeholder {
+	color: rgba(210, 210, 210, 0.72) !important;
+}
+
+.esri-search__submit-button:hover,
+.esri-search__clear-button:hover {
+	background: rgba(50, 50, 50, 0.96) !important;
 }
 
 .mapButton,
@@ -351,6 +446,10 @@ body,
 	margin-right: 0;
 }
 
+#layerPanelTitle {
+	letter-spacing: 0.6px;
+}
+
 #layerPanelContent {
 	overflow: auto;
 	display: none;
@@ -449,22 +548,93 @@ body,
 	box-shadow: var(--shadow-lg), 0 0 18px rgba(210, 210, 210, 0.12);
 	padding: 10px 12px 12px;
 	color: var(--text-primary);
+	overflow: hidden;
+	box-sizing: border-box;
+	max-height: 120px;
+	transition: width 0.28s ease, max-height 0.28s ease, padding 0.28s ease;
+}
+
+#glowControlContainer.is-collapsed {
+	width: 56px;
+	height: 56px;
+	max-height: 56px;
+	padding: 10px;
 }
 
 #glowControlHeader {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
 	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: 0.4px;
 	color: var(--text-primary);
 	margin-bottom: 8px;
+	gap: 8px;
+	cursor: pointer;
+	overflow: hidden;
+	transition: margin-bottom 0.22s ease, gap 0.22s ease;
+}
+
+#glowControlTitle {
+	flex: 1;
+	white-space: nowrap;
+	opacity: 1;
+	transition: opacity 0.18s ease;
 }
 
 #glowValue {
 	color: var(--text-muted);
 	font-weight: 600;
+	opacity: 1;
+	transition: opacity 0.18s ease;
+}
+
+#glowControlBody {
+	display: block;
+	max-height: 40px;
+	opacity: 1;
+	overflow: hidden;
+	transition: max-height 0.22s ease, opacity 0.18s ease;
+}
+
+#glowToggleButton {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	font-size: 14px;
+	flex: none;
+}
+
+#glowControlContainer.is-collapsed #glowControlHeader {
+	margin-bottom: 0;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	gap: 0;
+}
+
+#glowControlContainer.is-collapsed #glowControlTitle,
+#glowControlContainer.is-collapsed #glowValue {
+	flex: 0 0 0;
+	max-width: 0;
+	overflow: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+
+#glowControlContainer.is-collapsed #glowControlBody {
+	max-height: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+#glowControlContainer.is-collapsed #glowToggleButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
 }
 
 #glowSlider {

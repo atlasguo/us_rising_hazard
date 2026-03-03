@@ -165,6 +165,37 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 	// Add all layers to the map
 	layers.forEach(layer => map.add(layer));
 
+	function setLayerVisibilityByIndex(index, visible) {
+		const targetLayer = layers[index];
+		if (!targetLayer) {
+			console.warn(`[layer-toggle] Invalid layer index "${index}"`);
+			return;
+		}
+
+		targetLayer.visible = visible;
+
+		const layerCheckbox = document.getElementById(`layerCheckbox${index}`);
+		if (layerCheckbox) {
+			layerCheckbox.checked = visible;
+		}
+	}
+
+	function toggleLayerVisibilityByName(layerName) {
+		const index = window.layerIndexByName?.get(layerName);
+		if (typeof index !== "number") {
+			console.warn(`[layer-toggle] Unknown layer name "${layerName}"`);
+			return;
+		}
+
+		// Single-select mode for legend clicks: keep only one layer visible.
+		layers.forEach((_, currentIndex) => {
+			setLayerVisibilityByIndex(currentIndex, currentIndex === index);
+		});
+	}
+
+	window.setLayerVisibilityByIndex = setLayerVisibilityByIndex;
+	window.toggleLayerVisibilityByName = toggleLayerVisibilityByName;
+
 	// Define the new Feature Layer URL
 	const hexFeatureLayerUrl = "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/hex_score/FeatureServer";
 
@@ -284,9 +315,27 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		updateGlow();
 	}
 
-	// Display info dialog initially
+	// Display info dialog initially without layout jump.
 	const initialInfoDialog = document.getElementById("infoDialog");
-	initialInfoDialog.style.display = "block"; // Ensure the dialog is displayed
+	initialInfoDialog.style.display = "block";
+	initialInfoDialog.style.visibility = "hidden";
+	initialInfoDialog.style.opacity = "0";
+
+	const revealInfoDialog = function () {
+		initialInfoDialog.style.visibility = "visible";
+		initialInfoDialog.style.opacity = "1";
+	};
+
+	const fontReadyPromise = document.fonts && document.fonts.ready
+		? document.fonts.ready
+		: Promise.resolve();
+
+	Promise.race([
+		fontReadyPromise,
+		new Promise((resolve) => setTimeout(resolve, 600))
+	]).then(function () {
+		requestAnimationFrame(revealInfoDialog);
+	});
 
 	// Add event listeners for zoom buttons
 	zoomInButton.addEventListener("click", function () {
@@ -312,7 +361,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 		layerCheckbox.id = `layerCheckbox${index}`;
 		layerCheckbox.checked = true; // Initially checked
 		layerCheckbox.addEventListener("change", function () {
-			layer.visible = this.checked;
+			setLayerVisibilityByIndex(index, this.checked);
 		});
 
 		const layerLabel = document.createElement("label");
@@ -332,9 +381,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 	showAllButton.innerText = "Show All";
 	showAllButton.style.marginRight = "10px"; // Add spacing between buttons
 	showAllButton.addEventListener("click", function () {
-		layers.forEach((layer, index) => {
-			document.getElementById(`layerCheckbox${index}`).checked = true;
-			layer.visible = true;
+		layers.forEach((_, index) => {
+			setLayerVisibilityByIndex(index, true);
 		});
 	});
 
@@ -342,9 +390,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 	clearButton.id = "clearButton"; // Add ID for custom styling
 	clearButton.innerText = "Clear";
 	clearButton.addEventListener("click", function () {
-		layers.forEach((layer, index) => {
-			document.getElementById(`layerCheckbox${index}`).checked = false;
-			layer.visible = false;
+		layers.forEach((_, index) => {
+			setLayerVisibilityByIndex(index, false);
 		});
 	});
 
