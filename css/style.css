@@ -133,6 +133,54 @@ body,
 	font-weight: 700;
 }
 
+.esri-popup__main-container {
+	border-radius: 12px;
+	overflow: hidden;
+	width: 340px !important;
+	max-height: 490px !important;
+}
+
+.esri-popup__header,
+.esri-popup__content,
+.esri-popup__footer {
+	border-radius: 0;
+}
+
+.esri-popup--shadow {
+	box-shadow: none !important;
+}
+
+.esri-popup__pointer {
+	display: none !important;
+}
+
+.esri-popup__pointer-direction {
+	display: none !important;
+}
+
+.esri-popup__pointer::before,
+.esri-popup__pointer::after,
+.esri-popup__pointer-direction::before,
+.esri-popup__pointer-direction::after {
+	display: none !important;
+}
+
+.esri-popup__pointer-container,
+.esri-popup__pointer-container::before,
+.esri-popup__pointer-container::after,
+.esri-popup__shadow-container,
+.esri-popup__shadow-container::before,
+.esri-popup__shadow-container::after {
+	box-shadow: none !important;
+	filter: none !important;
+	background: transparent !important;
+	border: none !important;
+}
+
+.esri-popup__content {
+	max-height: 380px !important;
+}
+
 .esri-search {
 	opacity: 0.95;
 	height: 36px;
@@ -143,6 +191,9 @@ body,
 .esri-search__container {
 	border-radius: var(--radius-md);
 	overflow: visible;
+	height: 36px;
+	display: flex;
+	align-items: center;
 }
 
 .esri-search__input {
@@ -166,12 +217,31 @@ body,
 	border: none !important;
 	box-shadow: none !important;
 	overflow: hidden;
+	display: flex;
+	align-items: center;
 }
 
 .esri-search__submit-button {
 	border-radius: 0 var(--radius-md) var(--radius-md) 0;
 	border: none !important;
 	box-shadow: none !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.esri-search__input.esri-input {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	height: 100%;
+	line-height: 36px;
+}
+
+.esri-search__clear-button {
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .mapButton,
@@ -251,8 +321,9 @@ body,
 	border-radius: var(--radius-lg);
 	overflow: hidden;
 	box-shadow: var(--shadow-lg), 0 0 18px rgba(210, 210, 210, 0.12);
-	transition: max-width 0.28s ease, height 0.28s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
-	max-width: 52px;
+	transition: width 0.28s ease, height 0.28s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
+	width: 52px;
+	max-width: 360px;
 	padding: 6px;
 }
 

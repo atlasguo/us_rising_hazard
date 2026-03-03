@@ -47,7 +47,7 @@ infoButton.addEventListener("click", function () {
 		// Collapse the legend
 		legendContent.style.display = "none";
 		legendContainer.style.maxHeight = "58px";
-		legendContainer.style.width = "320px";
+		legendContainer.style.width = "270px";
 		toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
 	}
 });

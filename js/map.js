@@ -82,12 +82,26 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 
 	// Add event listener for map click to show popup
 	view.on("click", function (event) {
-		view.hitTest(event).then(function (response) {
-			if (response.results.length) {
-				// Hide the infoDialog
-				const infoDialog = document.getElementById("infoDialog");
+		view.hitTest(event, { include: [hexFeatureLayer] }).then(function (response) {
+			// Hide the infoDialog on first map interaction.
+			const infoDialog = document.getElementById("infoDialog");
+			if (infoDialog.style.display === "block") {
 				infoDialog.style.display = "none";
 			}
+
+			const hexHit = response.results.find(function (result) {
+				return result?.graphic?.layer === hexFeatureLayer;
+			});
+
+			if (!hexHit) {
+				view.popup.close();
+				return;
+			}
+
+			view.popup.open({
+				features: [hexHit.graphic],
+				location: event.mapPoint
+			});
 		});
 	});
 
@@ -339,4 +353,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/wid
 	buttonContainer.appendChild(showAllButton);
 	buttonContainer.appendChild(clearButton);
 	layerPanelContent.appendChild(buttonContainer);
+
+	// Recalculate expanded panel width after content is fully rendered.
+	if (typeof refreshLayerPanelExpandedWidth === "function") {
+		refreshLayerPanelExpandedWidth();
+	}
 });

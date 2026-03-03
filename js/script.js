@@ -1,5 +1,5 @@
 const hexPopupTemplate = {
-	title: "Risk Score of Selected 1K-SQ-MI Hexagon",
+	title: "Risk Score of Selected<br>1K-SQ-MI Hexagon",
 	content: [
 		{
 			type: "text", text: "{expression/color7} Heat Wave: {expression/score7}<br>\
@@ -223,7 +223,7 @@ function getColorExpression(field) {
 const legendContainer = document.createElement("div");
 legendContainer.id = "legendContainer";
 legendContainer.style.maxHeight = "58px";
-legendContainer.style.width = "320px";
+legendContainer.style.width = "270px";
 
 const legendHeader = document.createElement("div");
 legendHeader.id = "legendHeader";
@@ -265,7 +265,7 @@ legendHeader.addEventListener("click", function () {
 	} else {
 		legendContent.style.display = "none";
 		legendContainer.style.maxHeight = "58px";
-		legendContainer.style.width = "320px";
+		legendContainer.style.width = "270px";
 		toggleButton.innerHTML = "<i class='fas fa-chevron-up'></i>";
 	}
 });
@@ -273,7 +273,33 @@ legendHeader.addEventListener("click", function () {
 // Create a collapsible layer panel
 const layerPanelContainer = document.createElement("div");
 layerPanelContainer.id = "layerPanelContainer";
-layerPanelContainer.style.maxWidth = "360px";
+layerPanelContainer.style.width = "52px";
+
+const collapsedLayerPanelWidth = 52;
+const maxExpandedLayerPanelWidth = 360;
+let expandedLayerPanelWidth = "360px";
+
+function updateExpandedLayerPanelWidth() {
+	const previousWidth = layerPanelContainer.style.width;
+	const previousMaxWidth = layerPanelContainer.style.maxWidth;
+
+	layerPanelContainer.style.width = "auto";
+	layerPanelContainer.style.maxWidth = `${maxExpandedLayerPanelWidth}px`;
+
+	const measuredWidth = Math.ceil(layerPanelContainer.getBoundingClientRect().width);
+	const clampedWidth = Math.min(Math.max(measuredWidth, collapsedLayerPanelWidth), maxExpandedLayerPanelWidth);
+	expandedLayerPanelWidth = `${clampedWidth}px`;
+
+	layerPanelContainer.style.width = previousWidth;
+	layerPanelContainer.style.maxWidth = previousMaxWidth;
+}
+
+function refreshLayerPanelExpandedWidth() {
+	updateExpandedLayerPanelWidth();
+	if (layerPanelContent.style.display !== "none") {
+		layerPanelContainer.style.width = expandedLayerPanelWidth;
+	}
+}
 
 function getExpandedLayerPanelHeight() {
 	// Keep panel tall enough for larger line-height while staying inside viewport.
@@ -283,15 +309,15 @@ function getExpandedLayerPanelHeight() {
 function setLayerPanelExpandedState(isExpanded) {
 	if (isExpanded) {
 		layerPanelContainer.classList.remove("is-collapsed");
-		layerPanelContainer.style.maxWidth = "360px";
-		layerPanelContainer.style.height = getExpandedLayerPanelHeight();
-		layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
 		layerPanelHeader.style.flexDirection = "row";
 		layerPanelContent.style.display = "block";
+		refreshLayerPanelExpandedWidth();
+		layerPanelContainer.style.height = getExpandedLayerPanelHeight();
+		layerToggleButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
 	} else {
 		layerPanelContainer.classList.add("is-collapsed");
-		layerPanelContainer.style.maxWidth = "52px";
-		layerPanelContainer.style.height = "112px";
+		layerPanelContainer.style.width = `${collapsedLayerPanelWidth}px`;
+		layerPanelContainer.style.height = "103px";
 		layerToggleButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
 		layerPanelHeader.style.flexDirection = "column";
 		layerPanelContent.style.display = "none";
@@ -322,6 +348,7 @@ layerPanelContainer.appendChild(layerPanelHeader);
 const layerPanelContent = document.createElement("div");
 layerPanelContent.id = "layerPanelContent";
 layerPanelContent.style.display = "block"; // Initially visible
+layerPanelContainer.style.width = expandedLayerPanelWidth;
 layerPanelContainer.style.height = getExpandedLayerPanelHeight();
 
 // Add content to the layer panel
@@ -344,6 +371,7 @@ layerPanelHeader.addEventListener("click", function () {
 
 window.addEventListener("resize", function () {
 	if (layerPanelContent.style.display !== "none") {
+		refreshLayerPanelExpandedWidth();
 		layerPanelContainer.style.height = getExpandedLayerPanelHeight();
 	}
 });
@@ -383,4 +411,5 @@ const colors = [
 // Define the order of colors and score fields
 const colorIndices = [2, 1, 0, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3];
 const scoreFields = [7, 8, 14, 13, 11, 6, 9, 18, 3, 1, 12, 2, 10, 15, 5, 16, 17, 4];
+
 
